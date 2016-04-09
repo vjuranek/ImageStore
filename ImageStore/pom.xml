@@ -14,6 +14,7 @@
 	<modules>
 		<module>client</module>
 		<module>server</module>
+		<module>integration-tests/server-it</module>
 	</modules>
 
 	<properties>
@@ -23,9 +24,10 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 
 		<!-- packages versions -->
+		<version.arquillian.bom>1.1.11.Final</version.arquillian.bom>
 		<version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
 		<version.junit>4.12</version.junit>
-		
+
 		<!-- Maven plugin versions -->
 		<version.maven.surefire>2.19.1</version.maven.surefire>
 		<version.war.plugin>2.1.1</version.war.plugin>
@@ -35,13 +37,30 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>server</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.jboss.spec</groupId>
 				<artifactId>jboss-javaee-7.0</artifactId>
 				<version>${version.jboss.spec.javaee.7.0}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${version.arquillian.bom}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
