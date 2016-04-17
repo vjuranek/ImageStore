@@ -33,6 +33,7 @@
 		<version.wildfly.arquillian.managed>8.2.1.Final</version.wildfly.arquillian.managed>
 
 		<!-- Maven plugin versions -->
+		<version.maven.dependency.plugin>2.10</version.maven.dependency.plugin>
 		<version.maven.failsafe>2.19.1</version.maven.failsafe>
 		<version.maven.surefire>2.19.1</version.maven.surefire>
 		<version.war.plugin>2.1.1</version.war.plugin>
@@ -125,6 +126,12 @@
 					<groupId>org.wildfly.plugins</groupId>
 					<artifactId>wildfly-maven-plugin</artifactId>
 					<version>${version.wildfly.maven.plugin}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${version.maven.dependency.plugin}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
