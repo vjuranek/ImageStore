@@ -14,7 +14,7 @@
 	<modules>
 		<module>client</module>
 		<module>server</module>
-		<module>integration-tests/server-it</module>
+		<module>integration-tests</module>
 	</modules>
 
 	<properties>

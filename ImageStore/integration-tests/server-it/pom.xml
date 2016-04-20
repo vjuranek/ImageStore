@@ -4,9 +4,9 @@
 
 	<parent>
 		<groupId>cz.jurankovi.imgserver</groupId>
-		<artifactId>img-server</artifactId>
+		<artifactId>imgserver-integration-tests-parent</artifactId>
 		<version>0.1-SNAPSHOT</version>
-		<relativePath>../../pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>server-integrationtests</artifactId>
@@ -16,9 +16,9 @@
 
 	<properties>
 		<app.name>server</app.name>
-		<app.war.dir>target/test-libs</app.war.dir>
+		<app.war.dir>${project.build.directory}/test-libs</app.war.dir>
 		<app.war.file>server.war</app.war.file>
-		<wildfly.home>target/wildfly-${version.wildfly}</wildfly.home>
+		<wildfly.home>${project.build.directory}/wildfly-${version.wildfly}</wildfly.home>
 	</properties>
 
 	<dependencies>

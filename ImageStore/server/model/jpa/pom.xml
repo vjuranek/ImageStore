@@ -4,18 +4,13 @@
 
 	<parent>
 	  <groupId>cz.jurankovi.imgserver</groupId>
-	  <artifactId>img-server</artifactId>
+	  <artifactId>server-model-parent</artifactId>
 	  <version>0.1-SNAPSHOT</version>
 	  <relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>server-parent</artifactId>
-	<name>server-parent</name>
-	<packaging>pom</packaging>
-	
-	<modules>
-	  <module>model</module>
-	  <module>rest</module>
-	</modules>
+	<artifactId>server-model-jpa</artifactId>
+	<name>server-model-jpa</name>
+	<packaging>jar</packaging>
 	
 </project>
