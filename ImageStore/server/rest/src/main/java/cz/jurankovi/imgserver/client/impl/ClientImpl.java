@@ -1,7 +1,7 @@
 package cz.jurankovi.imgserver.client.impl;
 
 import cz.jurankovi.imgserver.client.Client;
-import cz.jurankovi.imgserver.model.ClientVersion;
+import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
 public class ClientImpl implements Client {
     

@@ -15,6 +15,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>cz.jurankovi.imgserver</groupId>
+			<artifactId>server-model-rest</artifactId>
+		</dependency>
+	
+		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
 			<scope>provided</scope>

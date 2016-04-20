@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cz.jurankovi.imgserver.client.Client;
-import cz.jurankovi.imgserver.model.ClientVersion;
+import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
 public class ClientImplTest {
 

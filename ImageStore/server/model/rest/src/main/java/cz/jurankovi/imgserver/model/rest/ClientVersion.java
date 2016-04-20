@@ -1,4 +1,4 @@
-package cz.jurankovi.imgserver.model;
+package cz.jurankovi.imgserver.model.rest;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

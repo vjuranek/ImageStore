@@ -25,7 +25,7 @@ import org.w3c.dom.NodeList;
 
 import cz.jurankovi.imgserver.client.Client;
 import cz.jurankovi.imgserver.client.impl.ClientImpl;
-import cz.jurankovi.imgserver.model.ClientVersion;
+import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
 @RunWith(Arquillian.class)
 public class ClientEndPointIT {

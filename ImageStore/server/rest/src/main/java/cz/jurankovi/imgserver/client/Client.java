@@ -4,7 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import cz.jurankovi.imgserver.model.ClientVersion;
+import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
 /**
  * REST endpoint for the client. Provides namely update information for the client and updates themselves.

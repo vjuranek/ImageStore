@@ -3,19 +3,34 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-	  <groupId>cz.jurankovi.imgserver</groupId>
-	  <artifactId>img-server</artifactId>
-	  <version>0.1-SNAPSHOT</version>
-	  <relativePath>../pom.xml</relativePath>
+		<groupId>cz.jurankovi.imgserver</groupId>
+		<artifactId>img-server</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>server-parent</artifactId>
 	<name>server-parent</name>
 	<packaging>pom</packaging>
-	
+
 	<modules>
-	  <module>model</module>
-	  <module>rest</module>
+		<module>model</module>
+		<module>rest</module>
 	</modules>
-	
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>cz.jurankovi.imgserver</groupId>
+				<artifactId>server-model-jpa</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cz.jurankovi.imgserver</groupId>
+				<artifactId>server-model-rest</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 </project>
