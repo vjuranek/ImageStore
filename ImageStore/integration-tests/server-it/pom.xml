@@ -106,14 +106,14 @@
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>start</goal>
-									<goal>deploy</goal> <!-- TODO for some reason doesn't work, needs to be investigated -->
+									<!-- <goal>deploy</goal> --> <!-- TODO for some reason doesn't work, needs to be investigated -->
 								</goals>
 							</execution>
 							<execution>
 								<id>server-stop</id>
 								<phase>post-integration-test</phase>
 								<goals>
-									<goal>undeploy</goal>
+									<!-- <goal>undeploy</goal> -->
 									<goal>shutdown</goal>
 								</goals>
 							</execution>
