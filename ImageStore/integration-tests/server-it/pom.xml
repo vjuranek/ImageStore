@@ -17,14 +17,14 @@
 	<properties>
 		<app.name>server</app.name>
 		<app.war.dir>${project.build.directory}/test-libs</app.war.dir>
-		<app.war.file>server.war</app.war.file>
+		<app.war.file>server-rest.war</app.war.file>
 		<wildfly.home>${project.build.directory}/wildfly-${version.wildfly}</wildfly.home>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>server</artifactId>
+			<artifactId>server-rest</artifactId>
 			<type>war</type>
 			<scope>test</scope>
 		</dependency>
@@ -35,94 +35,94 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>process-test-classes</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
+	<profiles>
+		<profile>
+			<id>it</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack</id>
+								<phase>process-test-classes</phase>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>${version.wildfly}</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>target</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>copy-server-war</id> <!-- workaround for wildfly maven deploy task, which for some reason doesn't work -->
+								<phase>process-test-resources</phase>
+								<configuration>
+									<includeTypes>war</includeTypes>
+									<excludeTypes>jar</excludeTypes>
+									<excludeTransitive>true</excludeTransitive>
+									<outputDirectory>${project.build.directory}/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
+									<!-- <outputDirectory>${app.war.dir}</outputDirectory> -->
+									<stripVersion>true</stripVersion>
+								</configuration>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
 						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.wildfly</groupId>
-									<artifactId>wildfly-dist</artifactId>
-									<version>${version.wildfly}</version>
-									<type>zip</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>target</outputDirectory>
-								</artifactItem>
-							</artifactItems>
+							<jboss-home>${wildfly.home}</jboss-home>
+							<modules-path>${wildfly.home}/modules</modules-path>
+							<serverConfig>standalone.xml</serverConfig>
+							<jvm-args>-Xms64m -Xmx512m -XX:MaxPermSize=256m
+								-Djava.net.preferIPv4Stack=true
+							</jvm-args>
+							<targetDir>${app.war.dir}</targetDir>
+							<filename>${app.war.file}</filename>
+							<name>${app.name}</name>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-server-war</id> <!-- workaround for wildfly maven deploy task, which for some reason doesn't work -->
-						<phase>process-test-resources</phase>
-						<configuration>
-							<includeTypes>war</includeTypes>
-							<excludeTypes>jar</excludeTypes>
-							<excludeTransitive>true</excludeTransitive>
-							<outputDirectory>${project.build.directory}/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
-							<stripVersion>true</stripVersion>
-						</configuration>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<configuration>
-					<jboss-home>${wildfly.home}</jboss-home>
-					<modules-path>${wildfly.home}/modules</modules-path>
-					<serverConfig>standalone.xml</serverConfig>
-					<jvm-args>-Xms64m -Xmx512m -XX:MaxPermSize=256m
-						-Djava.net.preferIPv4Stack=true
-					</jvm-args>
-					<targetDir>${app.war.dir}</targetDir>
-					<filename>${app.war.file}</filename>
-					<name>${app.name}</name>
-				</configuration>
-				<executions>
-					<execution>
-						<id>server-start</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start</goal>
-							<!-- <goal>deploy</goal> --> <!-- TODO for some reason doesn't work, needs to be investigated -->
-						</goals>
-					</execution>
-					<execution>
-						<id>server-stop</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<!-- <goal>undeploy</goal> -->
-							<goal>shutdown</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+						<executions>
+							<execution>
+								<id>server-start</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+									<goal>deploy</goal> <!-- TODO for some reason doesn't work, needs to be investigated -->
+								</goals>
+							</execution>
+							<execution>
+								<id>server-stop</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>undeploy</goal>
+									<goal>shutdown</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+	</profiles>
 
 </project>
