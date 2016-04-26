@@ -17,14 +17,14 @@
 	<properties>
 		<app.name>server</app.name>
 		<app.war.dir>${project.build.directory}/test-libs</app.war.dir>
-		<app.war.file>server-rest.war</app.war.file>
+		<app.war.file>imgserver.war</app.war.file>
 		<wildfly.home>${project.build.directory}/wildfly-${version.wildfly}</wildfly.home>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>server-rest</artifactId>
+			<artifactId>imgserver</artifactId>
 			<type>war</type>
 			<scope>test</scope>
 		</dependency>
@@ -37,7 +37,13 @@
 
 	<profiles>
 		<profile>
-			<id>it</id>
+			<id>postgres</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+				</dependency>
+			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
@@ -72,8 +78,9 @@
 								<id>copy-server-war</id> <!-- workaround for wildfly maven deploy task, which for some reason doesn't work -->
 								<phase>process-test-resources</phase>
 								<configuration>
-									<includeTypes>war</includeTypes>
-									<excludeTypes>jar</excludeTypes>
+									<!-- <includeTypes>war</includeTypes>
+										<excludeTypes>jar</excludeTypes> -->
+									<includeArtifactIds>imgserver, postgresql</includeArtifactIds>
 									<excludeTransitive>true</excludeTransitive>
 									<outputDirectory>${project.build.directory}/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
 									<!-- <outputDirectory>${app.war.dir}</outputDirectory> -->
@@ -82,6 +89,29 @@
 								<goals>
 									<goal>copy-dependencies</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-datasource</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/wildfly-${version.wildfly}/standalone/deployments/</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/test/resources/ds</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

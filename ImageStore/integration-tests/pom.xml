@@ -17,13 +17,22 @@
 		<module>server-it</module>
 	</modules>
 
+	<properties>
+		<version.postgres.driver>9.4.1208</version.postgres.driver>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>cz.jurankovi.imgserver</groupId>
-				<artifactId>server-rest</artifactId>
+				<artifactId>imgserver</artifactId>
 				<type>war</type>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${version.postgres.driver}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

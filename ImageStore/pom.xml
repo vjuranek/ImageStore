@@ -35,6 +35,7 @@
 		<!-- Maven plugin versions -->
 		<version.maven.dependency.plugin>2.10</version.maven.dependency.plugin>
 		<version.maven.failsafe>2.19.1</version.maven.failsafe>
+		<version.maven.resource.plugin>2.7</version.maven.resource.plugin>
 		<version.maven.surefire>2.19.1</version.maven.surefire>
 		<version.war.plugin>2.1.1</version.war.plugin>
 		<version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
@@ -121,6 +122,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>${version.maven.dependency.plugin}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${version.maven.resource.plugin}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

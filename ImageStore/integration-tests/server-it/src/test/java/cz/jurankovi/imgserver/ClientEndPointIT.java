@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
 
 public class ClientEndPointIT {
 
-    private static final String CLIENT_VERSION_URL = "http://localhost:8080/server/rest/client/version";
+    private static final String CLIENT_VERSION_URL = "http://localhost:8080/imgserver/rest/client/version";
 
     @Test
     public void testClientVersion() throws Exception {
