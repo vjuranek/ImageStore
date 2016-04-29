@@ -1,1 +1,1 @@
-insert into client_version(major, minor,updated) values (0,1,now());
+INSERT INTO client_version(major, minor, released) VALUES (0, 1, now());

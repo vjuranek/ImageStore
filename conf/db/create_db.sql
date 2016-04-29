@@ -1,1 +1,1 @@
-create table client_version(id serial primary key, major smallint, minor smallint, updated timestamp);
+CREATE TABLE client_version(id SERIAL PRIMARY KEY, major SMALLINT, minor SMALLINT, released TIMESTAMP);

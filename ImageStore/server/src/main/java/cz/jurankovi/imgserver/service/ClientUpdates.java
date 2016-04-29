@@ -18,6 +18,7 @@ public class ClientUpdates {
         ClientVersion clientVersion = new ClientVersion();
         clientVersion.setMajor(cve.getMajor());
         clientVersion.setMinor(cve.getMinor());
+        clientVersion.setReleased(cve.getReleased());
         return clientVersion;
     }
 }
