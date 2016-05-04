@@ -28,8 +28,8 @@ import org.w3c.dom.NodeList;
 
 import cz.jurankovi.imgserver.model.jpa.ClientVersionEntity;
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
-import cz.jurankovi.imgserver.rest.client.Client;
-import cz.jurankovi.imgserver.rest.client.impl.ClientImpl;
+import cz.jurankovi.imgserver.rest.Client;
+import cz.jurankovi.imgserver.rest.impl.ClientImpl;
 import cz.jurankovi.imgserver.service.ClientUpdates;
 import cz.jurankovi.imgserver.util.Resources;
 

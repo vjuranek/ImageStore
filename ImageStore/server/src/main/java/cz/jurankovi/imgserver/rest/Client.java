@@ -1,4 +1,4 @@
-package cz.jurankovi.imgserver.rest.client;
+package cz.jurankovi.imgserver.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
