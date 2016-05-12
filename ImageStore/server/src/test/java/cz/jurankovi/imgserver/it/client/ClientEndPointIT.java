@@ -28,9 +28,9 @@ import org.w3c.dom.NodeList;
 
 import cz.jurankovi.imgserver.model.jpa.ClientVersionEntity;
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
-import cz.jurankovi.imgserver.rest.Client;
-import cz.jurankovi.imgserver.rest.impl.ClientImpl;
-import cz.jurankovi.imgserver.service.ClientUpdates;
+import cz.jurankovi.imgserver.rest.ClientEndpoint;
+import cz.jurankovi.imgserver.rest.impl.ClientEndpointImpl;
+import cz.jurankovi.imgserver.service.ClientUpdateService;
 import cz.jurankovi.imgserver.util.Resources;
 
 @RunWith(Arquillian.class)
@@ -44,11 +44,11 @@ public class ClientEndPointIT {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(Client.class)
-                .addClass(ClientImpl.class)
+                .addClass(ClientEndpoint.class)
+                .addClass(ClientEndpointImpl.class)
                 .addClass(ClientVersion.class)
                 .addClass(ClientVersionEntity.class)
-                .addClass(ClientUpdates.class)
+                .addClass(ClientUpdateService.class)
                 .addClass(Resources.class)
                 .addAsWebInfResource(new File("src/test/resources/META-INF/persistence.xml"), "classes/META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -56,7 +56,7 @@ public class ClientEndPointIT {
     }
 
     @Inject
-    private Client client;
+    private ClientEndpoint client;
     
     @Inject
     EntityManager em;

@@ -3,6 +3,7 @@ package cz.jurankovi.imgserver.rest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
@@ -14,11 +15,11 @@ import cz.jurankovi.imgserver.model.rest.ClientVersion;
  */
 
 @Path("/client")
-public interface Client {
+public interface ClientEndpoint {
     
     @GET
     @Path("/version")
-    @Produces({ "application/xml" })
+    @Produces({ MediaType.APPLICATION_XML })
     public ClientVersion getCurrentVersion();
     
 }

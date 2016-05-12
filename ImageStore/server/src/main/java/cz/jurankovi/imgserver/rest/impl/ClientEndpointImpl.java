@@ -3,13 +3,13 @@ package cz.jurankovi.imgserver.rest.impl;
 import javax.inject.Inject;
 
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
-import cz.jurankovi.imgserver.rest.Client;
-import cz.jurankovi.imgserver.service.ClientUpdates;
+import cz.jurankovi.imgserver.rest.ClientEndpoint;
+import cz.jurankovi.imgserver.service.ClientUpdateService;
 
-public class ClientImpl implements Client {
+public class ClientEndpointImpl implements ClientEndpoint {
     
     @Inject
-    private ClientUpdates updatesService;
+    private ClientUpdateService updatesService;
     
     @Override
     public ClientVersion getCurrentVersion() {

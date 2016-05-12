@@ -8,7 +8,7 @@ import cz.jurankovi.imgserver.model.jpa.ClientVersionEntity;
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
 @Stateless
-public class ClientUpdates {
+public class ClientUpdateService {
     
     @Inject
     private EntityManager em;
