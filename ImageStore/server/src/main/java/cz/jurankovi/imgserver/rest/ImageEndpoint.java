@@ -4,7 +4,6 @@ import java.io.InputStream;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
@@ -28,7 +27,7 @@ public interface ImageEndpoint {
     @Consumes(MediaType.APPLICATION_XML)
     public Response prepareUpload(@Context UriInfo uriInfo, Image image);
     
-    @PUT
+    @POST
     @Path("/{imgId}")
     @Consumes("image/*;charset=UTF-8")
     public Response upload(@PathParam("imgId") long imgId, InputStream imageStream);

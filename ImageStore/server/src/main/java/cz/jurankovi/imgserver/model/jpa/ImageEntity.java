@@ -24,6 +24,7 @@ public class ImageEntity {
     private String name;
     private String sha256;
     private Date created;
+    private Date uploaded;
     @Column(name = "upload_finished")
     private boolean uploadFinished;
 
@@ -74,6 +75,14 @@ public class ImageEntity {
     public void setCreated(Date created) {
         this.created = created;
     }
+    
+    public Date getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(Date uploaded) {
+        this.uploaded = uploaded;
+    }
 
     public boolean isUploadFinished() {
         return uploadFinished;
@@ -89,6 +98,7 @@ public class ImageEntity {
         int result = 1;
         result = prime * result + clientId;
         result = prime * result + ((created == null) ? 0 : created.hashCode());
+        result = prime * result + ((uploaded == null) ? 0 : uploaded.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         result = prime * result + ((sha256 == null) ? 0 : sha256.hashCode());
@@ -111,6 +121,11 @@ public class ImageEntity {
             if (other.getCreated() != null)
                 return false;
         } else if (!created.equals(other.created))
+            return false;
+        if (uploaded == null) {
+            if (other.getUploaded() != null)
+                return false;
+        } else if (!uploaded.equals(other.uploaded))
             return false;
         if (name == null) {
             if (other.name != null)
