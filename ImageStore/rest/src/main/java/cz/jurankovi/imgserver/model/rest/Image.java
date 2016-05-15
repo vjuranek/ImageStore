@@ -8,12 +8,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "image")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Image {
-    
+
     @XmlAttribute
     private String name;
-    
+
     @XmlAttribute
     private String sha256;
+
+    public Image() {
+    }
+
+    public Image(String name, String sha256) {
+        this.name = name;
+        this.sha256 = sha256;
+    }
 
     public String getName() {
         return name;

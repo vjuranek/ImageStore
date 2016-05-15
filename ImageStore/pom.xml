@@ -37,6 +37,7 @@
 		<version.maven.dependency.plugin>2.10</version.maven.dependency.plugin>
 		<version.maven.failsafe>2.19.1</version.maven.failsafe>
 		<version.maven.resource.plugin>2.7</version.maven.resource.plugin>
+		<version.maven.shade>2.4.3</version.maven.shade>
 		<version.maven.surefire>2.19.1</version.maven.surefire>
 		<version.war.plugin>2.1.1</version.war.plugin>
 		<version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
@@ -107,6 +108,11 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>${version.maven.shade}</version>
+				</plugin>	
 
 				<plugin>
 					<artifactId>maven-war-plugin</artifactId>

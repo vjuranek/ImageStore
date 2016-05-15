@@ -18,8 +18,8 @@ import cz.jurankovi.imgserver.model.rest.Image;
 @Stateless
 public class ImageService {
 
-    private final int BUFFER_SIZE = 1024;
-    private final String HASH_ALG = "SHA-256";
+    private static final int BUFFER_SIZE = 1024;
+    private static final String HASH_ALG = "SHA-256";
 
     @Inject
     private EntityManager em;
@@ -67,7 +67,6 @@ public class ImageService {
     /*package*/ String digestToString(byte[] digest) {
         StringBuffer sb = new StringBuffer();
         for (byte b : digest) {
-            System.out.println(b);
             sb.append(String.format("%02x", b));
         }
         return sb.toString();
