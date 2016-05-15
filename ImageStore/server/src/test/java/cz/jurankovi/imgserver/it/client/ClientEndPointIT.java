@@ -28,8 +28,8 @@ import org.w3c.dom.NodeList;
 
 import cz.jurankovi.imgserver.model.jpa.ClientVersionEntity;
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
-import cz.jurankovi.imgserver.rest.ClientEndpoint;
-import cz.jurankovi.imgserver.rest.impl.ClientEndpointImpl;
+import cz.jurankovi.imgserver.rest.ClientResource;
+import cz.jurankovi.imgserver.rest.impl.ClientResourceImpl;
 import cz.jurankovi.imgserver.service.ClientUpdateService;
 import cz.jurankovi.imgserver.util.Resources;
 
@@ -44,8 +44,8 @@ public class ClientEndPointIT {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(ClientEndpoint.class)
-                .addClass(ClientEndpointImpl.class)
+                .addClass(ClientResource.class)
+                .addClass(ClientResourceImpl.class)
                 .addClass(ClientVersion.class)
                 .addClass(ClientVersionEntity.class)
                 .addClass(ClientUpdateService.class)
@@ -56,7 +56,7 @@ public class ClientEndPointIT {
     }
 
     @Inject
-    private ClientEndpoint client;
+    private ClientResource client;
     
     @Inject
     EntityManager em;

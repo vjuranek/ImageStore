@@ -20,8 +20,8 @@ import cz.jurankovi.imgserver.model.rest.Image;
  *
  */
 @Path("/image")
-public interface ImageEndpoint {
-
+public interface ImageResource {
+    
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_XML)
@@ -30,5 +30,5 @@ public interface ImageEndpoint {
     @POST
     @Path("/{imgId}")
     @Consumes("image/*;charset=UTF-8")
-    public Response upload(@PathParam("imgId") long imgId, InputStream imageStream);
+    public Response upload(@PathParam("imgId") Long imgId, InputStream imageStream);
 }

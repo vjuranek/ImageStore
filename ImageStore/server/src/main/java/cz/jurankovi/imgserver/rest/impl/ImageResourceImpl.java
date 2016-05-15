@@ -12,10 +12,10 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import cz.jurankovi.imgserver.model.rest.Image;
-import cz.jurankovi.imgserver.rest.ImageEndpoint;
+import cz.jurankovi.imgserver.rest.ImageResource;
 import cz.jurankovi.imgserver.service.ImageService;
 
-public class ImageEndpointImpl implements ImageEndpoint {
+public class ImageResourceImpl implements ImageResource {
     
     @Inject
     private ImageService imgService;
@@ -24,12 +24,12 @@ public class ImageEndpointImpl implements ImageEndpoint {
     public Response prepareUpload(@Context UriInfo uriInfo, Image image) {
         long id = imgService.prepareImageUpload(image);
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder(); 
-        uriBuilder.path(ImageEndpoint.class, "upload");
-        return Response.ok().link(uriBuilder.build(id), "upload").build();
+        uriBuilder.path(ImageResource.class, "upload");
+        return Response.ok().link(uriBuilder.build(id), "upload").header("imgId", id).build();
     }
     
     @Override
-    public Response upload(long imgId, InputStream imageStream) {
+    public Response upload(Long imgId, InputStream imageStream) {
         try {
             imgService.uploadImage(imgId, imageStream);
         } catch(IOException | NoSuchAlgorithmException e) {

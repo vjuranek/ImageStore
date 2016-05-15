@@ -15,7 +15,7 @@ import cz.jurankovi.imgserver.model.rest.ClientVersion;
  */
 
 @Path("/client")
-public interface ClientEndpoint {
+public interface ClientResource {
     
     @GET
     @Path("/version")
