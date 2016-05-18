@@ -30,7 +30,7 @@ import cz.jurankovi.imgserver.model.jpa.ClientVersionEntity;
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
 import cz.jurankovi.imgserver.rest.ClientResource;
 import cz.jurankovi.imgserver.rest.impl.ClientResourceImpl;
-import cz.jurankovi.imgserver.service.ClientUpdateService;
+import cz.jurankovi.imgserver.service.ClientService;
 import cz.jurankovi.imgserver.util.Resources;
 
 @RunWith(Arquillian.class)
@@ -48,7 +48,7 @@ public class ClientEndPointIT {
                 .addClass(ClientResourceImpl.class)
                 .addClass(ClientVersion.class)
                 .addClass(ClientVersionEntity.class)
-                .addClass(ClientUpdateService.class)
+                .addClass(ClientService.class)
                 .addClass(Resources.class)
                 .addAsWebInfResource(new File("src/test/resources/META-INF/persistence.xml"), "classes/META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")

@@ -6,13 +6,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "client_version")
+@NamedQueries({
+    @NamedQuery(name = ClientVersionEntity.GET_CLIENT_VERTION_QUERY, 
+            query = "SELECT version FROM ClientVersionEntity AS version WHERE :major IS NOT NULL AND :minor IS NOT NULL AND version.major = :major AND version.minor = :minor")
+})
 public class ClientVersionEntity {
 
+    public static final String GET_CLIENT_VERTION_QUERY = "getClientversionQuery";
+    
     @Id
     @SequenceGenerator(name = "client_version_seq", sequenceName = "client_version_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_version_seq")
