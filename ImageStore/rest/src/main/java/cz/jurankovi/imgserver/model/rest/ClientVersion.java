@@ -20,6 +20,16 @@ public class ClientVersion {
     @XmlAttribute
     private Date released;
 
+    public ClientVersion() {
+
+    }
+
+    public ClientVersion(short major, short minor, Date relesed) {
+        this.major = major;
+        this.minor = minor;
+        this.released = relesed;
+    }
+
     public short getMajor() {
         return major;
     }

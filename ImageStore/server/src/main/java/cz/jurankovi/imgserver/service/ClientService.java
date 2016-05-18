@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import cz.jurankovi.imgserver.model.jpa.ClientEntity;
 import cz.jurankovi.imgserver.model.jpa.ClientVersionEntity;
+import cz.jurankovi.imgserver.model.rest.Client;
 import cz.jurankovi.imgserver.model.rest.ClientVersion;
 
 @Stateless
@@ -26,12 +27,17 @@ public class ClientService {
         return client.getId();
     }
     
+    public Client getClient(Long clientId) {
+        ClientEntity ce = em.find(ClientEntity.class, clientId);
+        ClientVersionEntity cve = ce.getClientVersion();
+        ClientVersion clientVersion = new ClientVersion(cve.getMajor(), cve.getMinor(), cve.getReleased()); //TODO use apater
+        Client client = new Client(clientVersion);
+        return client;
+    }
+    
     public ClientVersion getClientVersion() {
         ClientVersionEntity cve = em.find(ClientVersionEntity.class, 1);
-        ClientVersion clientVersion = new ClientVersion();
-        clientVersion.setMajor(cve.getMajor());
-        clientVersion.setMinor(cve.getMinor());
-        clientVersion.setReleased(cve.getReleased());
+        ClientVersion clientVersion = new ClientVersion(cve.getMajor(), cve.getMinor(), cve.getReleased());
         return clientVersion;
     }
 }
