@@ -10,9 +10,17 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine;
 
 import cz.jurankovi.imgserver.model.rest.Image;
 import cz.jurankovi.imgserver.rest.ImageResource;
@@ -32,7 +40,13 @@ public class SimpleImgClient {
         String imgSha256 = digestToString(sha256(file));
         Image img = new Image(imgPath, imgSha256);
         
-        ResteasyClient client = new ResteasyClientBuilder().build();
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        CredentialsProvider credentials = new BasicCredentialsProvider();
+        credentials.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("testclient", "testpassword"));
+        HttpClient httpClient = builder.setDefaultCredentialsProvider(credentials).build();
+        
+        ClientHttpEngine engine = new ApacheHttpClient4Engine(httpClient);
+        ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine) .build();
         ResteasyWebTarget target = (ResteasyWebTarget) client.target("http://localhost:8080/imgserver/rest");
         ImageResource imgRes = target.proxy(ImageResource.class);
         
