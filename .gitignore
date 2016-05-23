@@ -14,3 +14,6 @@ server/WebContent/
 
 # Emacs
 *~
+
+# maven shade plugin
+ImageStore/client/dependency-reduced-pom.xml
