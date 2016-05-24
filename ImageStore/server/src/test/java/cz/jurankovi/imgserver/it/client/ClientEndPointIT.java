@@ -46,10 +46,10 @@ public class ClientEndPointIT {
         return ShrinkWrap.create(WebArchive.class)
                 .addClass(ClientResource.class)
                 .addClass(ClientResourceImpl.class)
-                .addClass(ClientVersion.class)
                 .addClass(ClientVersionEntity.class)
                 .addClass(ClientService.class)
                 .addClass(Resources.class)
+                .addPackage("cz.jurankovi.imgserver.model.rest")
                 .addAsWebInfResource(new File("src/test/resources/META-INF/persistence.xml"), "classes/META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"));
