@@ -5,15 +5,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.Response;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
@@ -26,7 +30,7 @@ import cz.jurankovi.imgserver.model.rest.Image;
 import cz.jurankovi.imgserver.rest.ImageResource;
 
 public class SimpleImgClient {
-    
+
     private static final int BUFFER_SIZE = 1024;
     private static final String HASH_ALG = "SHA-256";
 
@@ -39,38 +43,45 @@ public class SimpleImgClient {
         File file = new File(imgPath);
         String imgSha256 = digestToString(sha256(file));
         Image img = new Image(imgPath, imgSha256);
-        
+
+        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
         HttpClientBuilder builder = HttpClientBuilder.create();
         CredentialsProvider credentials = new BasicCredentialsProvider();
         credentials.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("testclient", "testpassword"));
         HttpClient httpClient = builder.setDefaultCredentialsProvider(credentials).build();
-        
+        builder.setSSLSocketFactory(getSSLConnectionSocketFactory());
+
         ClientHttpEngine engine = new ApacheHttpClient4Engine(httpClient);
-        ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine) .build();
-        ResteasyWebTarget target = (ResteasyWebTarget) client.target("http://localhost:8080/imgserver/rest");
+        ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
+        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
         ImageResource imgRes = target.proxy(ImageResource.class);
-        
+
         Response res = imgRes.prepareUpload(null, img);
         if (Response.Status.OK != res.getStatusInfo()) {
-            //TODO hande failure
+            // TODO hande failure
         }
         URI uploadURI = res.getLink("upload").getUri();
         System.out.println("upload to " + uploadURI);
-      //TODO really use URI, it can be different server than one with DB
+        // TODO really use URI, it can be different server than one with DB
         Long imgId = Long.valueOf(res.getHeaderString("imgId"));
         res.close();
-        
-        
+
         try (InputStream is = new FileInputStream(file)) {
             res = imgRes.upload(imgId, is);
             if (Response.Status.OK != res.getStatusInfo()) {
-                //TODO hande failure
+                // TODO hande failure
             }
         } finally {
             res.close();
         }
     }
-    
+
+    private static SSLConnectionSocketFactory getSSLConnectionSocketFactory() throws Exception {
+        KeyStore clientTrustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(clientTrustStore).build();
+        return new SSLConnectionSocketFactory(sslContext);
+    }
+
     private static byte[] sha256(File f) throws IOException, NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(HASH_ALG);
         try (FileInputStream fis = new FileInputStream(f)) {
@@ -82,7 +93,7 @@ public class SimpleImgClient {
         }
         return md.digest();
     }
-    
+
     private static String digestToString(byte[] digest) {
         StringBuffer sb = new StringBuffer();
         for (byte b : digest) {
