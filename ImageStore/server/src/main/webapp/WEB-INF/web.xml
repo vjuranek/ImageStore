@@ -6,7 +6,7 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
-	<security-constraint>
+	<!-- <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>image resource</web-resource-name>
 			<url-pattern>/rest/image/*</url-pattern>
@@ -23,6 +23,6 @@
 
 	<security-role>
 		<role-name>client</role-name>
-	</security-role>
+	</security-role> -->
 
 </web-app>
