@@ -1,0 +1,9 @@
+= Qt client for image server
+
+== Build
+[source,bash]
+----
+mkdir build && cd build
+/opt/qt/5.6/gcc_64/bin/qmake ../imgserver-client.pro
+make
+----
