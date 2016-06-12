@@ -17,3 +17,6 @@ server/WebContent/
 
 # maven shade plugin
 ImageStore/client/dependency-reduced-pom.xml
+
+# Qt
+qt-client/build
