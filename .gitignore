@@ -20,3 +20,4 @@ ImageStore/client/dependency-reduced-pom.xml
 
 # Qt
 qt-client/build
+qt-client/imgserver-client.pro.user
