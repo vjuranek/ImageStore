@@ -14,7 +14,15 @@ class RestClient : public QObject
 public:
     RestClient();
     ~RestClient();
+
+    // general REST methods
     void get(const QString &url);
+
+    // methods specific to img server
+    /**
+     *  Creates new client with specified version
+     */
+    void createClient(int versionMajor, int versionMinor);
 
 private:
     QNetworkAccessManager *manager;

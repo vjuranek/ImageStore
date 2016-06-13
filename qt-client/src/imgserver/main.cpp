@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
     std::cout << "start" << std::endl;
 
     RestClient *client = new RestClient();
-    client->get("http://localhost:8080/imgserver/rest");
+    //client->get("http://localhost:8080/imgserver/rest/client/1");
+    client->createClient(0, 1);
 
     std::cout << "end" << std::endl;
 
