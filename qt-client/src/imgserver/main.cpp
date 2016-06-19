@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
 
     RestClient *client = new RestClient();
     //client->get("http://localhost:8080/imgserver/rest/client/1");
-    client->createClient(0, 1);
+    //client->createClient(0, 1);
+    client->uploadImage("test.png", "/tmp/test.png");
 
     std::cout << "end" << std::endl;
 

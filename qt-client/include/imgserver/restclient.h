@@ -19,17 +19,20 @@ public:
     void get(const QString &url);
 
     // methods specific to img server
-    /**
-     *  Creates new client with specified version
-     */
     void createClient(int versionMajor, int versionMinor);
+    void uploadImage(QString imageName, QString imagePath);
 
 private:
     QNetworkAccessManager *manager;
-    QByteArray responseData;
+    QByteArray imageContent;
+
+    void prepareImageUpload(QString imageName, QString imagePath);
+    QString parseLinkHeader(QList<QPair<QByteArray, QByteArray>> headers);
+
 
 public slots:
     void readReply(QNetworkReply *reply);
+    void doImageUpload(QNetworkReply *reply);
 
 };
 
