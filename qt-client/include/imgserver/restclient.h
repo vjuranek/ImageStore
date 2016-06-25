@@ -25,9 +25,12 @@ public:
 private:
     QNetworkAccessManager *manager;
     QByteArray imageContent;
+    QSslConfiguration sslConfig;
 
     void prepareImageUpload(QString imageName, QString imagePath);
     QString parseLinkHeader(QList<QPair<QByteArray, QByteArray>> headers);
+    QSslConfiguration prepareSslConfig();
+
 
 
 public slots:

@@ -6,6 +6,7 @@
 RestClient::RestClient()
 {
     this->manager = new QNetworkAccessManager(this);
+    this->sslConfig = this->prepareSslConfig();
     //connect(this->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(readReply(QNetworkReply*)));
 }
 
@@ -73,8 +74,9 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
     stream.writeEndDocument();
 
     connect(this->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(doImageUpload(QNetworkReply*)));
-    QNetworkRequest req = QNetworkRequest(QUrl("http://localhost:8080/imgserver/rest/image"));
+    QNetworkRequest req = QNetworkRequest(QUrl("https://localhost:8443/imgserver/rest/image"));
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/xml");
+    req.setSslConfiguration(this->sslConfig);
     manager->post(req, xmlReq);
 }
 
@@ -108,4 +110,21 @@ QString RestClient::parseLinkHeader(QList<QPair<QByteArray, QByteArray>> headers
     }
     //TODO if uploadLink == null throw error
     return uploadLink;
+}
+
+QSslConfiguration RestClient::prepareSslConfig()
+{
+    QSslConfiguration sslConfig(QSslConfiguration::defaultConfiguration());
+    sslConfig.setProtocol(QSsl::TlsV1_2OrLater);
+
+    QFile certFile("/tmp/cert.pem");
+    certFile.open(QIODevice::ReadOnly);
+    QList<QSslCertificate> caList = sslConfig.caCertificates();
+    QSslCertificate serverCert(&certFile, QSsl::Pem);
+    caList.append(serverCert);
+    sslConfig.setCaCertificates(caList);
+    sslConfig.setPeerVerifyDepth(1);
+
+    sslConfig.setPeerVerifyMode(QSslSocket::VerifyPeer);
+    return sslConfig;
 }
