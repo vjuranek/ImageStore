@@ -5,6 +5,7 @@
 #include <QString>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QAuthenticator>
 
 
 class RestClient : public QObject
@@ -36,6 +37,7 @@ private:
 public slots:
     void readReply(QNetworkReply *reply);
     void doImageUpload(QNetworkReply *reply);
+    void setCredentials(QNetworkReply *reply, QAuthenticator *auth);
 
 };
 

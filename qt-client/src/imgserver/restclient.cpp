@@ -8,6 +8,7 @@ RestClient::RestClient()
     this->manager = new QNetworkAccessManager(this);
     this->sslConfig = this->prepareSslConfig();
     //connect(this->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(readReply(QNetworkReply*)));
+    connect(this->manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)), this, SLOT(setCredentials(QNetworkReply*, QAuthenticator*)));
 }
 
 RestClient::~RestClient()
@@ -127,4 +128,10 @@ QSslConfiguration RestClient::prepareSslConfig()
 
     sslConfig.setPeerVerifyMode(QSslSocket::VerifyPeer);
     return sslConfig;
+}
+
+void RestClient::setCredentials(QNetworkReply *reply, QAuthenticator *auth)
+{
+    auth->setUser("testclient");
+    auth->setPassword("testpassword");
 }
