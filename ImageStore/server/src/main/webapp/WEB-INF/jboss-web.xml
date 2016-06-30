@@ -1,0 +1,3 @@
+<jboss-web>
+    <security-domain>imgserver</security-domain>
+</jboss-web>

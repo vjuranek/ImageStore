@@ -134,4 +134,5 @@ void RestClient::setCredentials(QNetworkReply *reply, QAuthenticator *auth)
 {
     auth->setUser("testclient");
     auth->setPassword("testpassword");
+    auth->setRealm("rest");
 }
