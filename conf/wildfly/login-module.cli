@@ -2,5 +2,5 @@ batch
 embed-server
 /subsystem=security/security-domain=imgserver:add
 /subsystem=security/security-domain=imgserver/authentication=classic:add
-/subsystem=security/security-domain=imgserver/authentication=classic/login-module=Database:add(code=Database, flag=required, module-options={"dsJndiName" => "java:jboss/datasources/postgres","principalsQuery" => "select password from users where users.username = ?","rolesQuery" => "select role, 'Roles' from users, roles, user_roles where users.id = user_roles.user_id and roles.id = user_roles.role_id and users.username = ?","hashAlgorithm" => "SHA-256","hashEncoding" => "base64"})
+/subsystem=security/security-domain=imgserver/authentication=classic/login-module=Database:add(code=Database, flag=required, module-options={"dsJndiName" => "java:jboss/datasources/postgres","principalsQuery" => "select password from users where users.username = ?","rolesQuery" => "select role, 'Roles' from roles inner join user_roles on roles.id = user_roles.role_id inner join users on user_roles.user_id = users.id where users.username = ?","hashAlgorithm" => "SHA-256","hashEncoding" => "base64"})
 run-batch
