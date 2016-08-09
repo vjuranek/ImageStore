@@ -44,7 +44,10 @@ public class SimpleImgClient {
         String imgSha256 = digestToString(sha256(file));
         Image img = new Image(imgPath, imgSha256);
 
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
+        //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
+        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rhcloud_truststore.jks");
+        System.setProperty("javax.net.ssl.keyStore", "src/main/resources/keystore_client.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword","secret");
         HttpClientBuilder builder = HttpClientBuilder.create();
         CredentialsProvider credentials = new BasicCredentialsProvider();
         credentials.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("testclient", "testpassword"));
@@ -53,7 +56,8 @@ public class SimpleImgClient {
 
         ClientHttpEngine engine = new ApacheHttpClient4Engine(httpClient);
         ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
-        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
+        //ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
+        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://imgserver-vjuranek.rhcloud.com/imgserver/rest");
         ImageResource imgRes = target.proxy(ImageResource.class);
 
         Response res = imgRes.prepareUpload(null, img);
@@ -78,7 +82,15 @@ public class SimpleImgClient {
 
     private static SSLConnectionSocketFactory getSSLConnectionSocketFactory() throws Exception {
         KeyStore clientTrustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(clientTrustStore).build();
+        KeyStore clientKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        clientKeyStore.load(SimpleImgClient.class.getResourceAsStream("keystore_client.jks"), "secret".toCharArray());
+        //clientKeyStore.load(new FileInputStream(new File("/home/vjuranek/ws_img/ImageStore/ImageStore/client/src/main/resources/keystore_client.jks")), "secret".toCharArray());
+        SSLContext sslContext = SSLContexts.custom()
+                .loadTrustMaterial(clientTrustStore)
+                .loadKeyMaterial(clientKeyStore, "secret".toCharArray())
+                //.useTLS()
+                .build();
+        //return new SSLConnectionSocketFactory(sslContext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER);
         return new SSLConnectionSocketFactory(sslContext);
     }
 
