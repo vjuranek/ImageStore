@@ -128,7 +128,6 @@ QSslConfiguration RestClient::prepareSslConfig()
     QSslCertificate serverCert(&certFile, QSsl::Pem);
     caList.append(serverCert);
     sslConfig.setCaCertificates(caList);
-    sslConfig.setPeerVerifyDepth(1);
 
     sslConfig.setPeerVerifyMode(settings->value(RestClient::KEY_CLIENT_VERIFY_PEER).toBool() ? QSslSocket::VerifyPeer : QSslSocket::VerifyNone);
     return sslConfig;

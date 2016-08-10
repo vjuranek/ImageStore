@@ -10,8 +10,6 @@ int main(int argc, char *argv[])
 //    QCoreApplication::setApplicationName("Img server");
     QCoreApplication app(argc, argv);
 
-    std::cout << "start" << std::endl;
-
     QSettings settings;
     settings.setValue(RestClient::KEY_REST_URL, "https://imgserver-vjuranek.rhcloud.com/imgserver/rest");
     settings.setValue(RestClient::KEY_SERVER_CERT_PATH, "/tmp/rhcloud.pem");
@@ -22,8 +20,6 @@ int main(int argc, char *argv[])
 
     RestClient *client = new RestClient();
     client->uploadImage("test.png", "/tmp/test.png");
-
-    std::cout << "end" << std::endl;
 
     return app.exec();
 }
