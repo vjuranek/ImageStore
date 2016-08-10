@@ -3,28 +3,31 @@
 #include <QByteArray>
 #include <QFile>
 
+const QString RestClient::KEY_REST_URL = "rest/url";
+const QString RestClient::KEY_SERVER_CERT_PATH = "server/certificate";
+const QString RestClient::KEY_CLIENT_LOGIN = "client/login";
+const QString RestClient::KEY_CLIENT_PASSWORD = "client/password";
+const QString RestClient::KEY_CLIENT_REALM = "client/realm";
+const QString RestClient::KEY_CLIENT_VERIFY_PEER = "client/ssl/verify_peer";
+const QString RestClient::DEFAULT_REST_URL = "http://localhost:8080/imgserver/rest";
+
+
 RestClient::RestClient()
 {
-    this->manager = new QNetworkAccessManager(this);
-    this->sslConfig = this->prepareSslConfig();
-    //connect(this->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(readReply(QNetworkReply*)));
-    connect(this->manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)), this, SLOT(setCredentials(QNetworkReply*, QAuthenticator*)));
+    manager = new QNetworkAccessManager(this);
+    settings = new QSettings();
+    sslConfig = prepareSslConfig();
+    connect(manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)), this, SLOT(setCredentials(QNetworkReply*, QAuthenticator*)));
 }
 
 RestClient::~RestClient()
 {
-    delete this->manager;
-}
-
-void RestClient::get(const QString &url)
-{
-     manager->get(QNetworkRequest(QUrl(url)));
+    delete manager;
+    delete settings;
 }
 
 void RestClient::readReply(QNetworkReply *reply)
 {
-    std::cout << "GOT REPLY" << std::endl;
-
     std::cout << "REPLY headers:" << std::endl;
     QList<QPair<QByteArray, QByteArray>> headers = reply->rawHeaderPairs();
     for (int i = 0; i < headers.size(); i++)
@@ -47,22 +50,22 @@ void RestClient::createClient(int versionMajor, int versionMinor)
     stream.writeEndElement();
     stream.writeEndDocument();
 
-    QNetworkRequest req = QNetworkRequest(QUrl("http://localhost:8080/imgserver/rest/client"));
+    QNetworkRequest req = QNetworkRequest(QUrl(settings->value(RestClient::KEY_REST_URL, RestClient::DEFAULT_REST_URL).toString() + "/client"));
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/xml");
     manager->post(req, xmlReq);
 }
 
 void RestClient::uploadImage(QString imageName, QString imagePath)
 {
-    this->prepareImageUpload(imageName, imagePath);
+    prepareImageUpload(imageName, imagePath);
 }
 
 void RestClient::prepareImageUpload(QString imageName, QString imagePath)
 {
     QFile file(imagePath);
     if (!file.open(QIODevice::ReadOnly)) return; //TODO throw error
-    this->imageContent = file.readAll();
-    QByteArray imageSha256 = QCryptographicHash::hash(this->imageContent, QCryptographicHash::Sha256);
+    imageContent = file.readAll();
+    QByteArray imageSha256 = QCryptographicHash::hash(imageContent, QCryptographicHash::Sha256);
     qDebug() << "SHA256: " << imageSha256.toHex();
 
     QByteArray xmlReq;
@@ -74,11 +77,10 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
     stream.writeEndElement();
     stream.writeEndDocument();
 
-    connect(this->manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(doImageUpload(QNetworkReply*)));
-    //QNetworkRequest req = QNetworkRequest(QUrl("https://localhost:8443/imgserver/rest/image"));
-    QNetworkRequest req = QNetworkRequest(QUrl("https://imgserver-vjuranek.rhcloud.com/imgserver/rest/image"));
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(doImageUpload(QNetworkReply*)));
+    QNetworkRequest req = QNetworkRequest(QUrl(settings->value(RestClient::KEY_REST_URL, RestClient::DEFAULT_REST_URL).toString() + "/image"));
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/xml");
-    req.setSslConfiguration(this->sslConfig);
+    req.setSslConfiguration(sslConfig);
     manager->post(req, xmlReq);
 }
 
@@ -86,13 +88,13 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
 void RestClient::doImageUpload(QNetworkReply *reply)
 {
     qDebug() << "ERROR: " << reply->errorString();
-    QString uploadLink = this->parseLinkHeader(reply->rawHeaderPairs());
+    QString uploadLink = parseLinkHeader(reply->rawHeaderPairs());
     qDebug() << "upload link: " << uploadLink;
 
     QNetworkRequest req = QNetworkRequest(QUrl(uploadLink));
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "image/*;charset=UTF-8");
     manager->disconnect();
-    manager->post(req, this->imageContent);
+    manager->post(req, imageContent);
 }
 
 QString RestClient::parseLinkHeader(QList<QPair<QByteArray, QByteArray>> headers)
@@ -120,8 +122,7 @@ QSslConfiguration RestClient::prepareSslConfig()
     QSslConfiguration sslConfig(QSslConfiguration::defaultConfiguration());
     sslConfig.setProtocol(QSsl::TlsV1_2OrLater);
 
-    //QFile certFile("/tmp/cert.pem");
-    QFile certFile("/tmp/rhcloud.pem");
+    QFile certFile(settings->value(RestClient::KEY_SERVER_CERT_PATH).toString());
     certFile.open(QIODevice::ReadOnly);
     QList<QSslCertificate> caList = sslConfig.caCertificates();
     QSslCertificate serverCert(&certFile, QSsl::Pem);
@@ -129,14 +130,13 @@ QSslConfiguration RestClient::prepareSslConfig()
     sslConfig.setCaCertificates(caList);
     sslConfig.setPeerVerifyDepth(1);
 
-    sslConfig.setPeerVerifyMode(QSslSocket::VerifyPeer);
-    //sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
+    sslConfig.setPeerVerifyMode(settings->value(RestClient::KEY_CLIENT_VERIFY_PEER).toBool() ? QSslSocket::VerifyPeer : QSslSocket::VerifyNone);
     return sslConfig;
 }
 
 void RestClient::setCredentials(QNetworkReply *reply, QAuthenticator *auth)
 {
-    auth->setUser("testclient");
-    auth->setPassword("testpassword");
-    auth->setRealm("rest");
+    auth->setUser(settings->value(RestClient::KEY_CLIENT_LOGIN).toString());
+    auth->setPassword(settings->value(RestClient::KEY_CLIENT_PASSWORD).toString());
+    auth->setRealm(settings->value(RestClient::KEY_CLIENT_REALM).toString());
 }
