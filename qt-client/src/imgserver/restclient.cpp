@@ -15,7 +15,7 @@ const QString RestClient::DEFAULT_REST_URL = "http://localhost:8080/imgserver/re
 RestClient::RestClient()
 {
     manager = new QNetworkAccessManager(this);
-    settings = new QSettings();
+    settings = new QSettings("Image Code",  "RestClient");
     sslConfig = prepareSslConfig();
     connect(manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)), this, SLOT(setCredentials(QNetworkReply*, QAuthenticator*)));
 }
