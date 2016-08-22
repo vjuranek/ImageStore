@@ -3,6 +3,9 @@
 #include <QByteArray>
 #include <QFile>
 
+const QString RestClient::ORG_NAME = "Image Code";
+const QString RestClient::APP_NAME = "RestClient";
+
 const QString RestClient::KEY_REST_URL = "rest/url";
 const QString RestClient::KEY_SERVER_CERT_PATH = "server/certificate";
 const QString RestClient::KEY_CLIENT_LOGIN = "client/login";
@@ -15,7 +18,7 @@ const QString RestClient::DEFAULT_REST_URL = "http://localhost:8080/imgserver/re
 RestClient::RestClient()
 {
     manager = new QNetworkAccessManager(this);
-    settings = new QSettings("Image Code",  "RestClient");
+    settings = new QSettings(RestClient::ORG_NAME, RestClient::APP_NAME);
     sslConfig = prepareSslConfig();
     connect(manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)), this, SLOT(setCredentials(QNetworkReply*, QAuthenticator*)));
 }

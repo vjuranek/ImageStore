@@ -5,9 +5,9 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setOrganizationName("Image Code");
+    QCoreApplication::setOrganizationName(RestClient::ORG_NAME);
 //    QCoreApplication::setOrganizationDomain("vjuranek.github.io");
-    QCoreApplication::setApplicationName("RestClient");
+    QCoreApplication::setApplicationName(RestClient::APP_NAME);
     QCoreApplication app(argc, argv);
 
     QSettings settings;

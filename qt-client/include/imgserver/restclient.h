@@ -13,6 +13,9 @@ class RestClient : public QObject
     Q_OBJECT
 
 public:
+    static const QString ORG_NAME;
+    static const QString APP_NAME;
+
     static const QString KEY_REST_URL;
     static const QString KEY_SERVER_CERT_PATH;
     static const QString KEY_CLIENT_LOGIN;
