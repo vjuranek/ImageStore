@@ -44,8 +44,8 @@ public class SimpleImgClient {
         String imgSha256 = digestToString(sha256(file));
         Image img = new Image(imgPath, imgSha256);
 
-        //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rhcloud_truststore.jks");
+        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
+        //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rhcloud_truststore.jks");
         System.setProperty("javax.net.ssl.keyStore", "src/main/resources/keystore_client.jks");
         System.setProperty("javax.net.ssl.keyStorePassword","secret");
         HttpClientBuilder builder = HttpClientBuilder.create();
@@ -56,8 +56,8 @@ public class SimpleImgClient {
 
         ClientHttpEngine engine = new ApacheHttpClient4Engine(httpClient);
         ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
-        //ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
-        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://imgserver-vjuranek.rhcloud.com/imgserver/rest");
+        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
+        //ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://imgserver-vjuranek.rhcloud.com/imgserver/rest");
         ImageResource imgRes = target.proxy(ImageResource.class);
 
         Response res = imgRes.prepareUpload(null, img);

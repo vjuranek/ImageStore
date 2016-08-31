@@ -21,8 +21,31 @@ var ImageRow = React.createClass({
 
 
 var ImageTable = React.createClass({
+    getInitialState: function() {
+        return {images: []};
+    },
+    
+    fetchImages: function() {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({images: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    
+    componentDidMount: function() {
+        this.fetchImages();
+        setInterval(this.fetchImages, this.props.pollInterval);
+    },
+    
     render: function() {
-        var images = this.props.images.map(function(img) {
+        var imgs = this.state.images.map(function(img) {
             return(<ImageRow key={img.id} id={img.id} name={img.name} path={img.path} />);
         });
         
@@ -37,7 +60,7 @@ var ImageTable = React.createClass({
                             </tr>
                         </thead>
                         <tbody>
-                            {images}
+                            {imgs}
                         </tbody>
                     </table>
                 </div>
@@ -46,6 +69,7 @@ var ImageTable = React.createClass({
 });
 
 ReactDOM.render(
-        <ImageTable images={data} />,
+        <ImageTable url="rest/images/uploaded" pollInterval={5000} />,
+        //<ImageTable images={data} />,
         document.getElementById('container')
 );
