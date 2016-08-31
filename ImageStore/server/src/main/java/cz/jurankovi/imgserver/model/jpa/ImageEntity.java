@@ -92,13 +92,24 @@ public class ImageEntity {
         this.uploadFinished = uploadFinished;
     }
     
+    public String toJson() {
+        StringBuilder sb = new StringBuilder();
+        sb.append('{');
+        sb.append("\"id\":").append(id).append(',');
+        sb.append("\"name\": \"").append(name).append('"').append(',');
+        sb.append("\"path\": \"").append(path).append('"');
+        sb.append('}');
+        return sb.toString();
+    }
+    
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        sb.append("id=").append(id).append(",");
-        sb.append("name=").append(name).append(",");
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        sb.append("id=").append(id).append(',');
+        sb.append("name=").append(name).append(',');
         sb.append("path=").append(path);
-        sb.append("]");
+        sb.append(']');
         return sb.toString();
     }
 

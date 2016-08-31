@@ -17,13 +17,15 @@ public class ImagesResourceImpl implements ImagesResource {
     @Override
     public String getAll() {
         List<ImageEntity> imgs = imgsService.getAllImages();
-        return Functions.imgListToString(imgs);
+        //return Functions.imgListToString(imgs);
+        return Functions.imgListToJson(imgs);
     }
 
     @Override
     public String getUploaded() {
         List<ImageEntity> imgs = imgsService.getUploadedImages();
-        return Functions.imgListToString(imgs);
+        //return Functions.imgListToString(imgs);
+        return Functions.imgListToJson(imgs);
     }
 
 }
