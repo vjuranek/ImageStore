@@ -29,10 +29,6 @@ RestClient::~RestClient()
     delete settings;
 }
 
-/**
- * @brief RestClient::readReply Debug method to dump network reply to std out. Prints reply headers and reply body.
- * @param reply Reply to be dumped on std out.
- */
 void RestClient::readReply(QNetworkReply *reply)
 {
     std::cout << "REPLY headers:" << std::endl;
@@ -46,11 +42,6 @@ void RestClient::readReply(QNetworkReply *reply)
     std::cout << reply->readAll().data() << std::endl;
 }
 
-/**
- * @brief RestClient::createClient Creates new client recoed on remote server (in the databse).
- * @param versionMajor Major version of the client.
- * @param versionMinor Minor version of the client.
- */
 void RestClient::createClient(int versionMajor, int versionMinor)
 {
     QByteArray xmlReq;
@@ -67,21 +58,11 @@ void RestClient::createClient(int versionMajor, int versionMinor)
     manager->post(req, xmlReq);
 }
 
-/**
- * @brief RestClient::uploadImage Uploads local image to the remote server
- * @param imageName Name of the image on the remote server
- * @param imagePath Local path to the image
- */
 void RestClient::uploadImage(QString imageName, QString imagePath)
 {
     prepareImageUpload(imageName, imagePath);
 }
 
-/**
- * @brief RestClient::prepareImageUpload Sends initial POST resquest to the remote server, asking for image upload. Request conatins image name and it's SHA256 hash.
- * @param imageName Name of the image on the remote server
- * @param imagePath Local path to the image
- */
 void RestClient::prepareImageUpload(QString imageName, QString imagePath)
 {
     QFile file(imagePath);
@@ -106,11 +87,6 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
     manager->post(req, xmlReq);
 }
 
-/**
- * @brief RestClient::doImageUpload Callback method which does actual image upload via another POST request, containg image itself.
- * Before doing that, parses previous reply heads to find out upload link.
- * @param reply Reply from previous request. It has to contain "Link" header with URL where image should be uploaded.
- */
 void RestClient::doImageUpload(QNetworkReply *reply)
 {
     //qDebug() << "ERROR: " << reply->errorString();
@@ -123,11 +99,6 @@ void RestClient::doImageUpload(QNetworkReply *reply)
     manager->post(req, imageContent);
 }
 
-/**
- * @brief RestClient::parseLinkHeader Parses "Link" header
- * @param headers HTTP headers from the reply.
- * @return Value of the "Link" header.
- */
 QString RestClient::parseLinkHeader(QList<QPair<QByteArray, QByteArray>> headers)
 {
     QString uploadLink = nullptr;
@@ -148,10 +119,6 @@ QString RestClient::parseLinkHeader(QList<QPair<QByteArray, QByteArray>> headers
     return uploadLink;
 }
 
-/**
- * @brief RestClient::prepareSslConfig Configures parameters for SSL/TLS connection.
- * @return QSslConfiguration instance with appropriate setup.
- */
 QSslConfiguration RestClient::prepareSslConfig()
 {
     QSslConfiguration sslConfig(QSslConfiguration::defaultConfiguration());
@@ -168,11 +135,6 @@ QSslConfiguration RestClient::prepareSslConfig()
     return sslConfig;
 }
 
-/**
- * @brief RestClient::setCredentials Sets client credential to authenticate on remote sever.
- * @param reply Reply request for authentication.
- * @param auth QAuthentication instance with set up credentials.
- */
 void RestClient::setCredentials(QNetworkReply *reply, QAuthenticator *auth)
 {
     auth->setUser(settings->value(RestClient::KEY_CLIENT_LOGIN).toString());
