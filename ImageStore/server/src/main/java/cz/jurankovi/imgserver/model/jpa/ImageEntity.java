@@ -7,11 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "image")
+@NamedQueries({
+    @NamedQuery(name = "getAllImages", query = "SELECT img FROM ImageEntity img"),
+    @NamedQuery(name = "getAllUploadedImages", query = "SELECT img FROM ImageEntity img WHERE img.uploadFinished = true")
+})
 public class ImageEntity {
 
     @Id

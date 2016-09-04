@@ -21,11 +21,11 @@ public class ImagesService {
     private EntityManager em;
 
     public List<ImageEntity> getAllImages() {
-        return em.createQuery("SELECT img FROM ImageEntity img", ImageEntity.class).getResultList();
+        return em.createNamedQuery("getAllImages", ImageEntity.class).getResultList();
     }
     
     public List<ImageEntity> getUploadedImages() {
-        return em.createQuery("SELECT img FROM ImageEntity img WHERE img.uploadFinished = true", ImageEntity.class).getResultList();
+        return em.createNamedQuery("getAllUploadedImages", ImageEntity.class).getResultList();
     }
 
 }
