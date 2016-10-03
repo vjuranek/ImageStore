@@ -42,7 +42,9 @@ public class SimpleImgClient {
         String imgPath = args[0];
         File file = new File(imgPath);
         String imgSha256 = digestToString(sha256(file));
-        Image img = new Image(imgPath, imgSha256);
+        Image img = new Image();
+        img.setName(imgPath);
+        img.setSha256(imgSha256);
 
         System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
         //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rhcloud_truststore.jks");

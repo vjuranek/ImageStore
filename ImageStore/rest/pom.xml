@@ -13,6 +13,10 @@
 	<name>rest</name>
 	<packaging>jar</packaging>
 
+	<properties>
+		<version.plugins.jaxb2>2.3</version.plugins.jaxb2>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.jboss.spec.javax.ws.rs</groupId>
@@ -20,5 +24,26 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>${version.plugins.jaxb2}</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<packageName>cz.jurankovi.imgserver.model.rest</packageName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

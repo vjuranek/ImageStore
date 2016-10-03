@@ -30,14 +30,22 @@ public class ClientService {
     public Client getClient(Long clientId) {
         ClientEntity ce = em.find(ClientEntity.class, clientId);
         ClientVersionEntity cve = ce.getClientVersion();
-        ClientVersion clientVersion = new ClientVersion(cve.getMajor(), cve.getMinor(), cve.getReleased()); //TODO use apater
-        Client client = new Client(clientVersion);
+        ClientVersion clientVersion = new ClientVersion(); 
+        //TODO use apater
+        clientVersion.setMajor(cve.getMajor());
+        clientVersion.setMinor(cve.getMinor());
+        clientVersion.setReleased(cve.getReleased());
+        Client client = new Client();
+        client.setClientVersion(clientVersion);
         return client;
     }
     
     public ClientVersion getClientVersion() {
         ClientVersionEntity cve = em.find(ClientVersionEntity.class, 1);
-        ClientVersion clientVersion = new ClientVersion(cve.getMajor(), cve.getMinor(), cve.getReleased());
+        ClientVersion clientVersion = new ClientVersion();
+        clientVersion.setMajor(cve.getMajor());
+        clientVersion.setMinor(cve.getMinor());
+        clientVersion.setReleased(cve.getReleased());
         return clientVersion;
     }
 }

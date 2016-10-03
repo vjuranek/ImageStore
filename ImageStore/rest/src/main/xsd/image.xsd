@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="urn:imgserver:server:client:0.1"
+	targetNamespace="urn:imgserver:server:client:0.1"  
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="0.1">
+	
+	<xs:element name="image">
+		<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="name" type="xs:string"/>
+    			<xs:element name="sha256" type="xs:string"/>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+    
+</xs:schema>

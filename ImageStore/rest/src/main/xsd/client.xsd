@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:imgserver:server:client:0.1"
+	targetNamespace="urn:imgserver:server:client:0.1" elementFormDefault="qualified" attributeFormDefault="unqualified"
+	version="0.1">
+
+	<xs:element name="updates">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="client-version" type="tns:client-version" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="client">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="client-version" type="tns:client-version" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="client-version">
+		<xs:sequence>
+			<xs:element name="major" type="xs:short" />
+			<xs:element name="minor" type="xs:short" />
+			<xs:element name="released" type="xs:date" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
