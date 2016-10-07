@@ -73,7 +73,7 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
 
     QByteArray xmlReq;
     QXmlStreamWriter stream(&xmlReq);
-    stream.writeDefaultNamespace("urn:imgserver:server:client:0.1");
+    stream.writeDefaultNamespace("urn:imgserver:server:image:0.1");
     stream.writeStartDocument();
     stream.writeStartElement("image");
     stream.writeTextElement("name", imageName);
