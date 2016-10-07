@@ -29,6 +29,7 @@
         <version.arquillian.bom>1.1.11.Final</version.arquillian.bom>
         <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
         <version.junit>4.12</version.junit>
+        <version.resteasy>3.1.0.Beta2</version.resteasy>
         <version.shrinkwrap.resolver>2.2.2</version.shrinkwrap.resolver>
         <version.wildfly>10.0.0.Final</version.wildfly>
         <version.wildfly.arquillian.managed>8.2.1.Final</version.wildfly.arquillian.managed>
@@ -52,7 +53,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-multipart-provider</artifactId>
+                <version>${version.resteasy}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.jboss.shrinkwrap.resolver</groupId>
                 <artifactId>shrinkwrap-resolver-bom</artifactId>
@@ -60,7 +68,7 @@
                 <scope>test</scope>
                 <type>pom</type>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
@@ -68,20 +76,20 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.jboss.arquillian.protocol</groupId>
                 <artifactId>arquillian-protocol-servlet</artifactId>
                 <scope>test</scope>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.wildfly</groupId>
                 <artifactId>wildfly-arquillian-container-managed</artifactId>
                 <version>${version.wildfly.arquillian.managed}</version>
                 <scope>test</scope>
             </dependency>
-            
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
