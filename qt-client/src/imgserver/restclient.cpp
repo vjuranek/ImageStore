@@ -73,10 +73,11 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
 
     QByteArray xmlReq;
     QXmlStreamWriter stream(&xmlReq);
+    stream.writeDefaultNamespace("urn:imgserver:server:client:0.1");
     stream.writeStartDocument();
     stream.writeStartElement("image");
-    stream.writeAttribute("name", imageName);
-    stream.writeAttribute("sha256", imageSha256.toHex());
+    stream.writeTextElement("name", imageName);
+    stream.writeTextElement("sha256", imageSha256.toHex());
     stream.writeEndElement();
     stream.writeEndDocument();
 
