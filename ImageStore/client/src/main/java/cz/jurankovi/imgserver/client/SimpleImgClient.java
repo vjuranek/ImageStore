@@ -11,6 +11,8 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -45,9 +47,15 @@ public class SimpleImgClient {
         Image img = new Image();
         img.setName(imgPath);
         img.setSha256(imgSha256);
+        
+        //print image XMl to std out
+        JAXBContext jaxbContext = JAXBContext.newInstance(Image.class);
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        jaxbMarshaller.marshal(img, System.out);
 
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
-        //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rhcloud_truststore.jks");
+        //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/truststore_client.jks");
+        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/rhcloud_truststore.jks");
         System.setProperty("javax.net.ssl.keyStore", "src/main/resources/keystore_client.jks");
         System.setProperty("javax.net.ssl.keyStorePassword","secret");
         HttpClientBuilder builder = HttpClientBuilder.create();
@@ -58,8 +66,8 @@ public class SimpleImgClient {
 
         ClientHttpEngine engine = new ApacheHttpClient4Engine(httpClient);
         ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
-        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
-        //ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://imgserver-vjuranek.rhcloud.com/imgserver/rest");
+        //ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://localhost:8443/imgserver/rest");
+        ResteasyWebTarget target = (ResteasyWebTarget) client.target("https://imgserver-vjuranek.rhcloud.com/imgserver/rest");
         ImageResource imgRes = target.proxy(ImageResource.class);
 
         Response res = imgRes.prepareUpload(null, img);
