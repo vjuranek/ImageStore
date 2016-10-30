@@ -14,12 +14,17 @@ import javax.persistence.EntityManager;
 
 import cz.jurankovi.imgserver.model.jpa.ImageEntity;
 import cz.jurankovi.imgserver.model.rest.Image;
+import cz.jurankovi.imgserver.util.Configuration;
 
 @Stateless
 public class ImageService {
 
     private static final int BUFFER_SIZE = 1024;
     private static final String HASH_ALG = "SHA-256";
+    
+    @Inject
+    @Configuration(property = "upload.directory")
+    private String uploadDir;
 
     @Inject
     private EntityManager em;
@@ -37,7 +42,7 @@ public class ImageService {
     }
 
     public void uploadImage(long imgId, InputStream imageStream) throws IOException, IllegalStateException, NoSuchAlgorithmException {
-        String uploadedImgPath = String.format("/tmp/%d.png", imgId);
+        String uploadedImgPath = String.format(uploadDir + "/%d.png", imgId);
         String uploadedSHA = digestToString(copyStream(uploadedImgPath, imageStream));
         
         ImageEntity ie = em.find(ImageEntity.class, imgId);
