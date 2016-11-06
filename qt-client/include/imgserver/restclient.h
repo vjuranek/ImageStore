@@ -7,6 +7,8 @@
 #include <QNetworkReply>
 #include <QAuthenticator>
 #include <QSettings>
+#include <QMap>
+#include <QPair>
 
 class RestClient : public QObject
 {
@@ -40,6 +42,12 @@ public:
      */
     void uploadImage(QString imageName, QString imagePath);
 
+    /**
+     * @brief RestClient::uploadImages Uploads multiple images to server using HTTP multipart form.
+     * @param images Map of image names and their paths
+     */
+    void uploadImages(QMap<QString, QString> images);
+
 private:
     static const QString DEFAULT_REST_URL;
 
@@ -47,6 +55,14 @@ private:
     QSettings *settings;
     QByteArray imageContent;
     QSslConfiguration sslConfig;
+
+    /**
+     * @brief RestClient::getXmlImgPair Loads the image and prepare XML request for image to be sent.
+     * @param imageName Image name
+     * @param imagePath Absolute path to the image
+     * @return QPair containing XML request for given image and content of image itself
+     */
+    QPair<QByteArray, QByteArray> getXmlImgPair(QString imageName, QString imagePath);
 
     /**
      * @brief RestClient::prepareImageUpload Sends initial POST resquest to the remote server, asking for image upload. Request conatins image name and it's SHA256 hash.

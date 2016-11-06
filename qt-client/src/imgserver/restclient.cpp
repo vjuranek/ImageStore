@@ -2,6 +2,7 @@
 #include <iostream>
 #include <QByteArray>
 #include <QFile>
+#include <QHttpMultiPart>
 
 const QString RestClient::ORG_NAME = "Image Code";
 const QString RestClient::APP_NAME = "RestClient";
@@ -63,11 +64,40 @@ void RestClient::uploadImage(QString imageName, QString imagePath)
     prepareImageUpload(imageName, imagePath);
 }
 
-void RestClient::prepareImageUpload(QString imageName, QString imagePath)
+void RestClient::uploadImages(QMap<QString, QString> images)
+{
+    QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+    QMapIterator<QString, QString> iter(images);
+    while (iter.hasNext()) {
+        iter.next();
+        QPair<QByteArray, QByteArray> imgPair = getXmlImgPair(iter.key(), iter.value());
+        QHttpPart xmlPart;
+        xmlPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml");
+        xmlPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"images\""));
+        xmlPart.setBody(imgPair.first);
+
+        QHttpPart imgPart;
+        imgPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"files\"; filename=\"" + iter.key() + "\""));
+        imgPart.setBody(imgPair.second);
+
+        multiPart->append(xmlPart);
+        multiPart->append(imgPart);
+    }
+
+    QNetworkRequest req = QNetworkRequest(QUrl(settings->value(RestClient::KEY_REST_URL, RestClient::DEFAULT_REST_URL).toString() + "/imageset"));
+    QNetworkReply *reply = manager->post(req, multiPart);
+
+    multiPart->setParent(reply); // delete the multiPart with the reply
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(readReply(QNetworkReply*)));
+}
+
+QPair<QByteArray, QByteArray> RestClient::getXmlImgPair(QString imageName, QString imagePath)
 {
     QFile file(imagePath);
-    if (!file.open(QIODevice::ReadOnly)) return; //TODO throw error
-    imageContent = file.readAll();
+    //if (!file.open(QIODevice::ReadOnly)) return; //TODO throw error
+    file.open(QIODevice::ReadOnly);
+    QByteArray imageContent = file.readAll();
     QByteArray imageSha256 = QCryptographicHash::hash(imageContent, QCryptographicHash::Sha256);
     qDebug() << "SHA256: " << imageSha256.toHex();
 
@@ -81,11 +111,19 @@ void RestClient::prepareImageUpload(QString imageName, QString imagePath)
     stream.writeEndElement();
     stream.writeEndDocument();
 
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(doImageUpload(QNetworkReply*)));
+    return qMakePair(xmlReq, imageContent);
+}
+
+void RestClient::prepareImageUpload(QString imageName, QString imagePath)
+{
+    QPair<QByteArray, QByteArray> imgPair = getXmlImgPair(imageName, imagePath);
+    imageContent = imgPair.second;
+
+    //connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(doImageUpload(QNetworkReply*)));
     QNetworkRequest req = QNetworkRequest(QUrl(settings->value(RestClient::KEY_REST_URL, RestClient::DEFAULT_REST_URL).toString() + "/image"));
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/xml");
     req.setSslConfiguration(sslConfig);
-    manager->post(req, xmlReq);
+    manager->post(req, imgPair.first);
 }
 
 void RestClient::doImageUpload(QNetworkReply *reply)
