@@ -29,7 +29,7 @@
         <version.arquillian.bom>1.1.11.Final</version.arquillian.bom>
         <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
         <version.junit>4.12</version.junit>
-        <version.resteasy>3.1.0.Beta2</version.resteasy>
+        <version.resteasy>3.1.0.CR3</version.resteasy>
         <version.shrinkwrap.resolver>2.2.2</version.shrinkwrap.resolver>
         <version.wildfly>10.0.0.Final</version.wildfly>
         <version.wildfly.arquillian.managed>8.2.1.Final</version.wildfly.arquillian.managed>
@@ -57,6 +57,13 @@
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-multipart-provider</artifactId>
+                <version>${version.resteasy}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jackson2-provider</artifactId>
                 <version>${version.resteasy}</version>
                 <scope>provided</scope>
             </dependency>

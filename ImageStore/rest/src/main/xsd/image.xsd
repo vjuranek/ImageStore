@@ -12,6 +12,8 @@
             <xs:sequence>
                 <xs:element name="name" type="xs:string"/>
                 <xs:element name="sha256" type="xs:string"/>
+                <xs:element name="path" type="xs:string" />
+                <xs:element name="uploaded" type="xs:dateTime" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

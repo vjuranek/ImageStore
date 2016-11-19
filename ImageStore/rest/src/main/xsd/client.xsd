@@ -23,7 +23,7 @@
 		<xs:sequence>
 			<xs:element name="major" type="xs:short" />
 			<xs:element name="minor" type="xs:short" />
-			<xs:element name="released" type="xs:date" />
+			<xs:element name="released" type="xs:dateTime" />
 		</xs:sequence>
 	</xs:complexType>
 

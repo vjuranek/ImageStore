@@ -1,13 +1,19 @@
 package cz.jurankovi.imgserver.util;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import cz.jurankovi.imgserver.model.jpa.ImageEntity;
+import cz.jurankovi.imgserver.model.rest.Image;
 
 public class Functions {
 
+    public static List<Image> imgEntListToImg(List<ImageEntity> imgEntLits) {
+        return imgEntLits.stream().map(ent -> ModelMappers.ImageFromEntity(ent)).collect(Collectors.toList());
+    }
+    
     public static String imgListToString(List<ImageEntity> imgList) {
         StringBuilder sb = new StringBuilder();
         imgList.forEach(it -> {

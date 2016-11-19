@@ -1,7 +1,7 @@
 <bindings xmlns="http://java.sun.com/xml/ns/jaxb" version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<globalBindings>
 		<javaType name="java.util.Date" 
-			xmlType="xs:date" 
+			xmlType="xs:dateTime" 
 			parseMethod="cz.jurankovi.imgserver.jaxb.DateConverter.parseDate"
 			printMethod="cz.jurankovi.imgserver.jaxb.DateConverter.printDate" />
 	</globalBindings>

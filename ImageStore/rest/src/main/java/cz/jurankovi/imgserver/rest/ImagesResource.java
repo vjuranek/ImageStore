@@ -1,8 +1,12 @@
 package cz.jurankovi.imgserver.rest;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+
+import cz.jurankovi.imgserver.model.rest.Image;
 
 /**
  * REST endpoint for bulk image operations. 
@@ -15,12 +19,12 @@ public interface ImagesResource {
     
     @GET
     @Path("/")
-    @Produces("text/plain")
-    public String getAll();
+    @Produces("application/json")
+    public List<Image> getAll();
     
     @GET
     @Path("/uploaded")
-    @Produces("text/plain")
-    public String getUploaded();
+    @Produces("application/json")
+    public List<Image> getUploaded();
 
 }
