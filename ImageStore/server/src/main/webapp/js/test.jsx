@@ -1,19 +1,10 @@
-/**
- * 
- */
-
-var data = [
-  {id: 1, name: "test1", path: "/tmp/path1"},
-  {id: 2, name: "test2", path: "/tmp/path2"}
-];
-
 var ImageRow = React.createClass({
     render: function() {
         return(
-                <tr key={this.props.id}>
+                <tr key={this.props.id}> 
                     <td>{this.props.id}</td>
-                    <td>{this.props.name}</td>
-                    <td>{this.props.path}</td>
+                    <td>{this.props.name}</td> 
+                    <td>{this.props.path}</td> 
                 </tr>
         );
     }
