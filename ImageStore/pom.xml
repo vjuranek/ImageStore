@@ -15,6 +15,7 @@
         <module>client</module>
         <module>rest</module>
         <module>server</module>
+	<module>server-ui</module>
         <module>integration-tests</module>
     </modules>
 

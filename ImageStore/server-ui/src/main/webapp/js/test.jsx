@@ -60,7 +60,7 @@ var ImageTable = React.createClass({
 });
 
 ReactDOM.render(
-        <ImageTable url="rest/images/uploaded" pollInterval={5000} />,
+        <ImageTable url="http://localhost:8080/imgserver/rest/images/uploaded" pollInterval={5000} />,
         //<ImageTable images={data} />,
         document.getElementById('container')
 );
