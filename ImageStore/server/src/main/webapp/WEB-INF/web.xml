@@ -11,9 +11,9 @@
 			<web-resource-name>image resource</web-resource-name>
 			<url-pattern>/rest/image/*</url-pattern>
 		</web-resource-collection>
-		<auth-constraint>
+		<!-- auth-constraint>
 			<role-name>client</role-name>
-		</auth-constraint>
+		</auth-constraint -->
 	</security-constraint>
 
 	<login-config>

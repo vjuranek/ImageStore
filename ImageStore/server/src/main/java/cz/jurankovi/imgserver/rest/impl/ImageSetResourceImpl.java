@@ -13,8 +13,6 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
-import com.sun.xml.bind.Util;
-
 import cz.jurankovi.imgserver.model.rest.Image;
 import cz.jurankovi.imgserver.rest.ImageSetResource;
 import cz.jurankovi.imgserver.service.ImageService;
