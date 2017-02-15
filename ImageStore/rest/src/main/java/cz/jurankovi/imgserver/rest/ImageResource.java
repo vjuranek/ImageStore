@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import cz.jurankovi.imgserver.jaxb.ValidateXML;
 import cz.jurankovi.imgserver.model.rest.Image;
 
 /**
@@ -25,6 +26,7 @@ public interface ImageResource {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_XML)
+    @ValidateXML
     public Response prepareUpload(@Context UriInfo uriInfo, Image image);
     
     @POST
